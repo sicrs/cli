@@ -4,6 +4,7 @@ use std::collections::HashMap;
 pub struct Context {
     pub arg: Vec<String>,
     pub flagmap: HashMap<&'static str, FlagRes>,
+    pub is_default: bool,
 }
 
 #[derive(Debug)]
@@ -17,6 +18,7 @@ impl Context {
         Context {
             arg: Vec::new(),
             flagmap: HashMap::new(),
+            is_default: false,
         }
     }
 
