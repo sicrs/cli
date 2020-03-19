@@ -35,6 +35,11 @@ impl<T> App<T> {
         }
     }
 
+    pub fn register_default(mut self, cmd: Command<T>) -> App<T> {
+        self.default = cmd;
+        return self;
+    }
+
     pub fn register(mut self, cmd: Command<T>) -> App<T> {
         self.cmds.push(cmd);
         return self;
