@@ -157,6 +157,11 @@ impl<T> App<T> {
     }
 }
 
+pub fn fallback() {
+    eprintln!("try using --help");
+    exit(1);
+}
+
 #[cfg(test)]
 mod tests {
     use super::{App, Command, Context, Flag, FlagKind};
