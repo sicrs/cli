@@ -66,10 +66,15 @@ impl<T> App<T> {
                 }
 
                 if let Some(command) = cmnd {
+                    // match
                     cmd = command;
                 } else {
+                    // no match
                     cmd = self.default;
-                    ctx.is_default = true;
+                    if arg[0] != self.default.ident || arg[0] != self.default.alias {
+                        // run as default
+                        ctx.is_default = true;
+                    }
                 }
             }
 
