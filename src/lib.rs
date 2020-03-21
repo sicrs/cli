@@ -71,7 +71,7 @@ impl<T> App<T> {
                 } else {
                     // no match
                     cmd = self.default;
-                    if arg[0] != self.default.ident || arg[0] != self.default.alias {
+                    if arg[0] != cmd.ident && arg[0] != cmd.alias {
                         // run as default
                         ctx.is_default = true;
                     }
