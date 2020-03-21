@@ -45,7 +45,7 @@ impl<T> App<T> {
         return self;
     }
 
-    pub fn run(self, arg: Vec<String>) {
+    pub fn run(self, mut arg: Vec<String>) {
         if arg.len() == 0 {
             // try default
             let mut ctx = Context::new();
@@ -68,19 +68,22 @@ impl<T> App<T> {
                 if let Some(command) = cmnd {
                     // match
                     cmd = command;
+                    arg.remove(0);
                 } else {
                     // no match
                     cmd = self.default;
+                    // default identifier is not matched
                     if arg[0] != cmd.ident && arg[0] != cmd.alias {
                         // run as default
                         ctx.is_default = true;
+                    } else {
+                        arg.remove(0);
                     }
                 }
             }
 
-
             // start from index 1
-            let mut count = 1;
+            let mut count = 0;
             loop {
                 if count > arg.len() - 1 {
                     break;
