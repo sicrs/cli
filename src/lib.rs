@@ -48,9 +48,12 @@ impl<T> App<T> {
     pub fn run(self, arg: Vec<String>) {
         if arg.len() == 0 {
             // try default
-            (self.default.directive)(self.inner, Context::new());
+            let mut ctx = Context::new();
+            ctx.is_default = true;
+            (self.default.directive)(self.inner, ctx);
         } else {
             let cmd: Command<T>;
+            let mut ctx = Context::new();
 
             {
                 let mut cmnd: Option<Command<T>> = None;
@@ -66,10 +69,10 @@ impl<T> App<T> {
                     cmd = command;
                 } else {
                     cmd = self.default;
+                    ctx.is_default = true;
                 }
             }
 
-            let mut ctx = Context::new();
 
             // start from index 1
             let mut count = 1;
