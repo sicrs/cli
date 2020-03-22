@@ -85,8 +85,12 @@ impl<T> App<T> {
             // start from index 1
             let mut count = 0;
             loop {
-                if count > arg.len() - 1 {
+                if arg.len() == 0 {
                     break;
+                } else {
+                    if count >= arg.len() {
+                        break;
+                    }
                 }
 
                 if arg[count].starts_with("-") {
