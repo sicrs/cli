@@ -45,14 +45,14 @@ impl<T> App<T> {
         return self;
     }
 
-    pub fn run(self, mut arg: Vec<String>) {
+    pub fn run(mut self, mut arg: Vec<String>) {
         if arg.len() == 0 {
             // try default
             let mut ctx = Context::new();
             ctx.is_default = true;
             (self.default.directive)(self.inner, ctx);
         } else {
-            let cmd: Command<T>;
+            let mut cmd: Command<T>;
             let mut ctx = Context::new();
 
             {
