@@ -4,14 +4,14 @@ pub struct Command<T> {
     pub ident: &'static str,
     pub alias: &'static str,
     pub description: String,
-    pub directive: Box<dyn FnMut(T, Context) + 'static>,
+    pub directive: Box<dyn Fn(T, Context) + 'static>,
     pub flags: Vec<Flag>,
 }
 
 impl<U> Command<U> {
     pub fn new<T>(ident: &'static str, alias: &'static str, description: &str, directive: T) -> Command<U> 
     where
-        T: FnMut(U, Context) + 'static,
+        T: Fn(U, Context) + 'static,
     {
         Command {
             ident,
