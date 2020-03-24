@@ -3,13 +3,13 @@ use crate::context::Context;
 pub struct Command<T> {
     pub ident: &'static str,
     pub alias: &'static str,
-    pub description: String,
+    pub description: &'static str,
     pub directive: Box<dyn Fn(T, Context) + 'static>,
     pub flags: Vec<Flag>,
 }
 
 impl<U> Command<U> {
-    pub fn new<T>(ident: &'static str, alias: &'static str, description: &str, directive: T) -> Command<U> 
+    pub fn new<T>(ident: &'static str, alias: &'static str, description: &'static str, directive: T) -> Command<U> 
     where
         T: Fn(U, Context) + 'static,
     {
@@ -17,7 +17,7 @@ impl<U> Command<U> {
             ident,
             alias,
             directive: Box::new(directive),
-            description: String::from(description),
+            description,
             flags: Vec::new(),
         }
     }
@@ -30,7 +30,7 @@ impl<U> Command<U> {
 
 pub struct Flag {
     pub alias: &'static str,
-    pub description: String,
+    pub description: &'static str,
     pub ident: &'static str,
     pub kind: FlagKind,
 }
@@ -42,10 +42,10 @@ pub enum FlagKind {
 }
 
 impl Flag {
-    pub fn new(ident: &'static str, alias: &'static str, kind: FlagKind, description: &str) -> Flag {
+    pub fn new(ident: &'static str, alias: &'static str, kind: FlagKind, description: &'static str) -> Flag {
         Flag {
             alias,
-            description: String::from(description),
+            description,
             ident,
             kind,
         }

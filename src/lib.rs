@@ -10,7 +10,7 @@ impl<T> Command<T> {
         Command {
             ident: "",
             alias: "",
-            description: String::new(),
+            description: "",
             directive: Box::new(|_i: T, _c: Context| {
                 eprintln!("command not found; try using --help");
                 exit(1);
