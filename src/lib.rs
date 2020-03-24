@@ -36,12 +36,12 @@ impl<T> App<T> {
     }
 
     pub fn register_default(mut self, cmd: Command<T>) -> App<T> {
-        self.default = cmd;
+        self.default = cmd.flag(Flag::new("h", "help", FlagKind::OptFlag, "help"));
         return self;
     }
 
     pub fn register(mut self, cmd: Command<T>) -> App<T> {
-        self.cmds.push(cmd);
+        self.cmds.push(cmd.flag(Flag::new("h", "help", FlagKind::OptFlag, "help")));
         return self;
     }
 
