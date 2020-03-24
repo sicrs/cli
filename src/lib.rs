@@ -1,7 +1,7 @@
 mod command;
 mod context;
 
-pub use command::{Command, Flag, FlagKind};
+pub use command::{Command, CommandMeta, Flag, FlagKind};
 pub use context::{Context, FlagRes};
 use std::process::exit;
 
@@ -10,12 +10,12 @@ impl<T> Command<T> {
         Command {
             ident: "",
             alias: "",
-            description: "",
             directive: Box::new(|_i: T, _c: Context| {
                 eprintln!("command not found; try using --help");
                 exit(1);
             }),
             flags: Vec::new(),
+            meta: CommandMeta::new(),
         }
     }
 }
@@ -50,7 +50,7 @@ impl<T> App<T> {
             // try default
             let mut ctx = Context::new();
             ctx.is_default = true;
-            (self.default.directive)(self.inner, ctx);
+            self.default.run(self.inner, ctx);
         } else {
             let cmd: Command<T>;
             let mut ctx = Context::new();
@@ -167,7 +167,7 @@ impl<T> App<T> {
                 count += 1;
             }
 
-            (cmd.directive)(self.inner, ctx);
+            cmd.run(self.inner, ctx);
         }
     }
 }
@@ -183,7 +183,7 @@ mod tests {
     #[test]
     fn app_test() {
         let app: App<()> = App::new(()).register(
-            Command::new("test", "t", "test command", |_inner: _, c: Context| {
+            Command::new("test", "t", |_inner: _, c: Context| {
                 assert!(c.is_set("output"));
                 assert_eq!(c.get("input").unwrap(), "some_input".to_string());
                 assert_eq!(c.arg[0], "another_input".to_string());
