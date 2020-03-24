@@ -31,7 +31,7 @@ let app: App<Greeter> = App::new(Greeter {greeting: String::from("Good morning")
                 }
             }
         )
-        .flag(Flag::new("n", "name", FlagKind::InputFlag, "someone's name"))
+        .flag(Flag::new("name", "n", FlagKind::InputFlag, "someone's name"))
     );
 
 // collect arguments
