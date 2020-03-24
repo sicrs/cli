@@ -184,12 +184,12 @@ mod tests {
     fn app_test() {
         let app: App<()> = App::new(()).register(
             Command::new("test", "t", "test command", |_inner: _, c: Context| {
-                assert!(c.is_set("o"));
-                assert_eq!(c.get("i").unwrap(), "some_input".to_string());
+                assert!(c.is_set("output"));
+                assert_eq!(c.get("input").unwrap(), "some_input".to_string());
                 assert_eq!(c.arg[0], "another_input".to_string());
             })
             .flag(Flag::new("input", "i", FlagKind::InputFlag, "input"))
-            .flag(Flag::new("ooutput", "o", FlagKind::OptFlag, "option")),
+            .flag(Flag::new("output", "o", FlagKind::OptFlag, "option")),
         );
         
         let arg: Vec<String> = vec![
