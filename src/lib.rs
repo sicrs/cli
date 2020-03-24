@@ -96,7 +96,7 @@ impl<T> App<T> {
                 if arg[count].starts_with("-") {
                     if arg[count].starts_with("--") {
                         for flag in &cmd.flags {
-                            if arg[count].contains(flag.alias) {
+                            if arg[count].contains(flag.ident) {
                                 //match
                                 if flag.kind == FlagKind::InputFlag {
                                     if count + 1 == arg.len() || arg[count + 1].starts_with("-") {
@@ -110,7 +110,7 @@ impl<T> App<T> {
                                     if ctx.flagmap.contains_key(flag.ident) {
                                         eprintln!(
                                             "error: the flag --{} has already been set before",
-                                            flag.alias,
+                                            flag.ident,
                                         );
                                         exit(1);
                                     }
@@ -126,9 +126,9 @@ impl<T> App<T> {
                         }
                     } else {
                         for flag in &cmd.flags {
-                            if arg[count].contains(flag.ident) {
+                            if arg[count].contains(flag.alias) {
                                 if flag.kind == FlagKind::InputFlag {
-                                    if arg[count] == format!("-{}", flag.ident) {
+                                    if arg[count] == format!("-{}", flag.alias) {
                                         if count + 1 == arg.len() || arg[count + 1].starts_with("-")
                                         {
                                             eprintln!("No argument for flag {} found", arg[count]);
@@ -137,7 +137,7 @@ impl<T> App<T> {
                                         if ctx.flagmap.contains_key(flag.ident) {
                                             eprintln!(
                                             "error: the flag -{} has already been specified before",
-                                            flag.ident
+                                            flag.alias
                                         );
                                             exit(1);
                                         }
@@ -188,8 +188,8 @@ mod tests {
                 assert_eq!(c.get("i").unwrap(), "some_input".to_string());
                 assert_eq!(c.arg[0], "another_input".to_string());
             })
-            .flag(Flag::new("i", "input", FlagKind::InputFlag, "input"))
-            .flag(Flag::new("o", "option", FlagKind::OptFlag, "option")),
+            .flag(Flag::new("input", "i", FlagKind::InputFlag, "input"))
+            .flag(Flag::new("ooutput", "o", FlagKind::OptFlag, "option")),
         );
         
         let arg: Vec<String> = vec![
