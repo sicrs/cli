@@ -46,7 +46,7 @@ impl<U> Command<U> {
 }
 
 pub struct Flag {
-    pub alias: &'static str,
+    pub alias: Option<&'static str>,
     pub description: &'static str,
     pub ident: &'static str,
     pub kind: FlagKind,
@@ -61,7 +61,7 @@ pub enum FlagKind {
 impl Flag {
     pub fn new(
         ident: &'static str,
-        alias: &'static str,
+        alias: Option<&'static str>,
         kind: FlagKind,
         description: &'static str,
     ) -> Flag {
