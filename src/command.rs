@@ -22,7 +22,7 @@ impl<U> Command<U> {
             alias,
             directive: Box::new(directive),
             flags: Vec::new(),
-            helptext: "s"
+            helptext: ""
         }
     }
 
