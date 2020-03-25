@@ -1,7 +1,7 @@
 mod command;
 mod context;
 
-pub use command::{Command, CommandMeta, Flag, FlagKind};
+pub use command::{Command, Flag, FlagKind};
 pub use context::{Context, FlagRes};
 use std::process::exit;
 
@@ -15,7 +15,6 @@ impl<T> Command<T> {
                 exit(1);
             }),
             flags: Vec::new(),
-            meta: CommandMeta::new(),
         }
     }
 }
