@@ -9,7 +9,7 @@ impl<T> Command<T> {
     pub fn default() -> Command<T> {
         Command {
             ident: "",
-            alias: "",
+            alias: None,
             directive: Box::new(|_i: T, _c: Context| {
                 eprintln!("command not found; try using --help");
                 exit(1);
@@ -59,9 +59,16 @@ impl<T> App<T> {
                 let mut cmnd: Option<Command<T>> = None;
 
                 for command in self.cmds.into_iter() {
-                    if arg[0] == command.ident || arg[0] == command.alias {
+                    if arg[0] == command.ident {
                         cmnd = Some(command);
                         break;
+                    }
+
+                    if let Some(alias) = command.alias {
+                        if arg[0] == alias {
+                            cmnd = Some(command);
+                            break;
+                        }
                     }
                 }
 
@@ -73,9 +80,13 @@ impl<T> App<T> {
                     // no match
                     cmd = self.default;
                     // default identifier is not matched
-                    if arg[0] != cmd.ident && arg[0] != cmd.alias {
-                        // run as default
-                        ctx.is_default = true;
+                    if arg[0] != cmd.ident {
+                        if let Some(alias) = cmd.alias {
+                            if arg[0] != alias {
+                                // run as default
+                                ctx.is_default = true;
+                            }
+                        }
                     } else {
                         arg.remove(0);
                     }
@@ -185,7 +196,7 @@ mod tests {
     #[test]
     fn app_test() {
         let app: App<()> = App::new(()).register(
-            Command::new("test", "t", |_inner: _, c: Context| {
+            Command::new("test", Some("t"), |_inner: _, c: Context| {
                 assert!(c.is_set("output"));
                 assert_eq!(c.get("input").unwrap(), "some_input".to_string());
                 assert_eq!(c.arg[0], "another_input".to_string());

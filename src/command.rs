@@ -2,7 +2,7 @@ use crate::context::Context;
 
 pub struct Command<T> {
     pub ident: &'static str,
-    pub alias: &'static str,
+    pub alias: Option<&'static str>,
     pub directive: Box<dyn Fn(T, Context) + 'static>,
     pub flags: Vec<Flag>,
     pub helptext: &'static str,
@@ -11,7 +11,7 @@ pub struct Command<T> {
 impl<U> Command<U> {
     pub fn new<T>(
         ident: &'static str,
-        alias: &'static str,
+        alias: Option<&'static str>,
         directive: T,
     ) -> Command<U>
     where
